@@ -68,10 +68,10 @@ public class MainActivity extends AppCompatActivity {
         userImageView.setImageDrawable(ImageUtils.drawableFromByteArray(user.getImageBytes()));
 
         TextView followeeCount = findViewById(R.id.followeeCount);
-        followeeCount.setText("Following: " + "-42");
+        followeeCount.setText(getString(R.string.followeeCount, 42));
 
         TextView followerCount = findViewById(R.id.followerCount);
-        followerCount.setText("Followers: " + "-42");
+        followerCount.setText(getString(R.string.followerCount, 27));
     }
 
     @Override
