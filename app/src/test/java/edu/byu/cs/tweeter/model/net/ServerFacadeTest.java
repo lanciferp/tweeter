@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import edu.byu.cs.tweeter.model.domain.User;
@@ -32,7 +33,7 @@ class ServerFacadeTest {
 
     @Test
     void testGetFollowees_noFolloweesForUser() {
-        List<User> followees = Arrays.asList();
+        List<User> followees = Collections.emptyList();
         Mockito.when(serverFacadeSpy.getDummyFollowees()).thenReturn(followees);
 
         FollowingRequest request = new FollowingRequest(user1, 10, null);
@@ -44,7 +45,7 @@ class ServerFacadeTest {
 
     @Test
     void testGetFollowees_oneFollowerForUser_limitGreaterThanUsers() {
-        List<User> followees = Arrays.asList(user2);
+        List<User> followees = Collections.singletonList(user2);
         Mockito.when(serverFacadeSpy.getDummyFollowees()).thenReturn(followees);
 
         FollowingRequest request = new FollowingRequest(user1, 10, null);
