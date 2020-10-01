@@ -50,7 +50,7 @@ public class FollowingServiceProxyTest {
         ServerFacade mockServerFacade = Mockito.mock(ServerFacade.class);
         Mockito.when(mockServerFacade.getFollowees(validRequest, FollowingServiceProxy.URL_PATH)).thenReturn(successResponse);
 
-        failureResponse = new FollowingResponse("An exception occured");
+        failureResponse = new FollowingResponse("An exception occurred");
         Mockito.when(mockServerFacade.getFollowees(invalidRequest, FollowingServiceProxy.URL_PATH)).thenReturn(failureResponse);
 
         // Setup a mock observer for the FollowingService and GetFolloweesAsyncTask
