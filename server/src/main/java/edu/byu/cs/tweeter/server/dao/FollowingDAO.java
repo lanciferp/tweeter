@@ -107,6 +107,7 @@ public class FollowingDAO {
                     // We found the index of the last item returned last time. Increment to get
                     // to the first one we should return
                     followeesIndex = i + 1;
+                    break;
                 }
             }
         }
