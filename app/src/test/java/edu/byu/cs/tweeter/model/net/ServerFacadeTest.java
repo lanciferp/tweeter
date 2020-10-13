@@ -28,7 +28,7 @@ class ServerFacadeTest {
 
     @BeforeEach
     void setup() {
-        serverFacadeSpy = Mockito.spy(new ServerFacade());
+        serverFacadeSpy = Mockito.spy(new ServerFacade(status1));
     }
 
     @Test

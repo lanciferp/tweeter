@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context=".view.main.following.FollowingFragment">
+
+    <ImageView
+        android:id="@+id/statusUserImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/userImageContentDescription" />
+
+    <LinearLayout
+        android:id="@+id/statusUserInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerVertical="false"
+        android:layout_toEndOf="@id/statusUserImage">
+
+        <TextView
+            android:id="@+id/statusUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="@string/sampleUserName"/>
+
+        <TextView
+            android:id="@+id/statusUserAlias"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="@string/sampleAlias"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/statusTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/statusUserImage"
+        android:layout_below="@id/statusUserInfo"
+        android:text="@string/sampleStatusTIme" />
+
+    <TextView
+        android:id="@+id/statusMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/statusUserImage"
+        android:layout_below="@id/statusTime"
+        android:text="@string/sampleStatusText" />
+
+
+</RelativeLayout>
