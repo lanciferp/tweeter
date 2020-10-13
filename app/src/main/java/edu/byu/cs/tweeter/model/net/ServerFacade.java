@@ -74,7 +74,7 @@ public class ServerFacade {
             Date date = new Date(i,1,1);
             ArrayList<User> tempList = new ArrayList<User>();
             tempList.add(allFollowees.get(i));
-            Status status = new Status(date, "hello @user", tempList, tempList.get(1));
+            Status status = new Status(date, "hello @user", tempList, allFollowees.get(i));
             statuses.add(status);
         }
         return new StoryResponse(statuses,false);

@@ -34,7 +34,7 @@ import edu.byu.cs.tweeter.view.main.followers.FollowersFragment;
 import edu.byu.cs.tweeter.view.util.ImageUtils;
 
 public class StoryFragment extends Fragment implements StoryPresenter.View {
-    private static final String LOG_TAG = "FollowersFragment";
+    private static final String LOG_TAG = "StoryFragment";
     private static final String USER_KEY = "UserKey";
     private static final String AUTH_TOKEN_KEY = "AuthTokenKey";
 

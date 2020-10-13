@@ -43,7 +43,7 @@ public class Status {
     }
 
     public String getAlias(){
-        return getAlias();
+        return user.getAlias();
     }
 
     public String getImageUrl() {
@@ -52,6 +52,10 @@ public class Status {
 
     public byte[] getImageBytes() {
         return user.getImageBytes();
+    }
+
+    public void setImageBytes(byte[] imageBytes) {
+        user.setImageBytes(imageBytes);
     }
 
     @Override
