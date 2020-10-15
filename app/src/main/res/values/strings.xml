@@ -12,6 +12,8 @@
     <string name="storyTabTitle">Story</string>
     <string name="followingTabTitle">Following</string>
     <string name="followersTabTitle">Followers</string>
+    <string name="loginTabTitle">Login</string>
+    <string name="registerTabTitle">Register</string>
 
     <string name="sampleAlias">"@UserAlias"</string>
     <string name="sampleUserName">The User</string>
@@ -20,4 +22,13 @@
     <string name="followerCount">Followers: %d</string>
     <string name="sampleStatusText">Post content Mention: @thing</string>
     <string name="sampleStatusTIme">Sep 15 2020 10:49 PM</string>
+    <string name="follow_button_text">Follow</string>
+    <string name="nottwitter">NotTwitter</string>
+    <string name="username">\@username</string>
+    <string name="password">password</string>
+    <string name="login">Login</string>
+    <string name="take_a_profile_picture">Take a Profile Picture</string>
+    <string name="first_name">first name</string>
+    <string name="last_name">last name</string>
+    <string name="title_activity_profile">Profile</string>
 </resources>

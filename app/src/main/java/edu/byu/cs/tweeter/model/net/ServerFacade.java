@@ -9,14 +9,20 @@ import edu.byu.cs.tweeter.BuildConfig;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.model.service.request.FeedRequest;
+import edu.byu.cs.tweeter.model.service.request.FollowRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowersRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.model.service.request.LoginRequest;
 import edu.byu.cs.tweeter.model.service.request.StoryRequest;
+import edu.byu.cs.tweeter.model.service.request.UnfollowRequest;
+import edu.byu.cs.tweeter.model.service.response.FeedResponse;
+import edu.byu.cs.tweeter.model.service.response.FollowResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowersResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
 import edu.byu.cs.tweeter.model.service.response.StoryResponse;
+import edu.byu.cs.tweeter.model.service.response.UnfollowResponse;
 
 /**
  * Acts as a Facade to the Tweeter server. All network requests to the server should go through
@@ -72,13 +78,37 @@ public class ServerFacade {
 
         for(int i  = 0; i < 10; ++i){
             Date date = new Date(i,1,1);
-            ArrayList<User> tempList = new ArrayList<User>();
+            ArrayList<User> tempList = new ArrayList<>();
             tempList.add(allFollowees.get(i));
             Status status = new Status(date, "hello @user", tempList, allFollowees.get(i));
             statuses.add(status);
         }
         return new StoryResponse(statuses,false);
     }
+
+    public FeedResponse getFeed(FeedRequest request) {
+        ArrayList<Status> statuses = new ArrayList<>();
+
+        List<User> allFollowees = getDummyFollowees();
+
+        for(int i  = 0; i < 10; ++i){
+            Date date = new Date(i,1,1);
+            ArrayList<User> tempList = new ArrayList<>();
+            tempList.add(allFollowees.get(i));
+            Status status = new Status(date, "hello @user", tempList, allFollowees.get(i));
+            statuses.add(status);
+        }
+        return new FeedResponse(statuses,false);
+    }
+
+    public FollowResponse follow(FollowRequest request) {
+        return new FollowResponse(true, 48);
+    }
+
+    public UnfollowResponse unfollow(UnfollowRequest request) {
+        return new UnfollowResponse( 11);
+    }
+
 
     /**
      * Returns the users that the user specified in the request is being followed by. Uses information in

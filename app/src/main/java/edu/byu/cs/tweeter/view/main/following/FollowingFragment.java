@@ -177,6 +177,8 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
          * @param user the user to add.
          */
         void addItem(User user) {
+
+
             users.add(user);
             this.notifyItemInserted(users.size() - 1);
         }

@@ -46,6 +46,7 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Vi
     private User user;
     private AuthToken authToken;
     private FollowersPresenter presenter;
+    private RecyclerView recyclerView;
 
     private FollowersRecyclerViewAdapter followersRecyclerViewAdapter;
 
@@ -79,15 +80,15 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Vi
 
         presenter = new FollowersPresenter(this);
 
-        RecyclerView followingRecyclerView = view.findViewById(R.id.listRecyclerView);
-
+        RecyclerView followersRecyclerView = view.findViewById(R.id.listRecyclerView);
+        recyclerView = followersRecyclerView;
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
-        followingRecyclerView.setLayoutManager(layoutManager);
+        followersRecyclerView.setLayoutManager(layoutManager);
 
         followersRecyclerViewAdapter = new FollowersRecyclerViewAdapter();
-        followingRecyclerView.setAdapter(followersRecyclerViewAdapter);
+        followersRecyclerView.setAdapter(followersRecyclerViewAdapter);
 
-        followingRecyclerView.addOnScrollListener(new FollowRecyclerViewPaginationScrollListener(layoutManager));
+        followersRecyclerView.addOnScrollListener(new FollowRecyclerViewPaginationScrollListener(layoutManager));
 
         return view;
     }
@@ -177,8 +178,13 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Vi
          * @param user the user to add.
          */
         void addItem(User user) {
-            users.add(user);
-            this.notifyItemInserted(users.size() - 1);
+
+            recyclerView.post(new Runnable() {
+                public void run() {
+                    users.add(user);
+                    followersRecyclerViewAdapter.notifyItemInserted(users.size() - 1);
+                }
+            });
         }
 
         /**
@@ -190,7 +196,11 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Vi
         void removeItem(User user) {
             int position = users.indexOf(user);
             users.remove(position);
-            this.notifyItemRemoved(position);
+            recyclerView.post(new Runnable() {
+                public void run() {
+                    followersRecyclerViewAdapter.notifyItemRemoved(position);
+                }
+            });
         }
 
         /**

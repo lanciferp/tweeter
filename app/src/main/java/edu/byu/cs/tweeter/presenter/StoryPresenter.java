@@ -1,7 +1,5 @@
 package edu.byu.cs.tweeter.presenter;
 
-import android.view.View;
-
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.model.service.StoryService;
