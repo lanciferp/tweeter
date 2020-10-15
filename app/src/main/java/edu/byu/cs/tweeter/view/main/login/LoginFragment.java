@@ -19,7 +19,7 @@ import edu.byu.cs.tweeter.model.service.request.LoginRequest;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
 import edu.byu.cs.tweeter.presenter.LoginPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.LoginTask;
-import edu.byu.cs.tweeter.view.main.MainActivity;
+import edu.byu.cs.tweeter.view.main.main.MainActivity;
 
 public class LoginFragment extends Fragment implements LoginPresenter.View, LoginTask.Observer {
 
@@ -41,6 +41,7 @@ public class LoginFragment extends Fragment implements LoginPresenter.View, Logi
         EditText username = view.findViewById(R.id.loginusername);
         EditText password = view.findViewById(R.id.loginpassword);
         Button loginButton = view.findViewById(R.id.loginButton);
+        presenter = new LoginPresenter(this);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -54,6 +55,14 @@ public class LoginFragment extends Fragment implements LoginPresenter.View, Logi
             public void onClick(View view) {
                 loginInToast = Toast.makeText(getContext(), "Logging In", Toast.LENGTH_LONG);
                 loginInToast.show();
+
+                if(username.getText().toString().equals("")){
+                    Toast.makeText(getContext(), "You did not enter a username", Toast.LENGTH_SHORT).show();
+                    return;
+                } else if(password.getText().toString().equals("")) {
+                    Toast.makeText(getContext(), "You did not enter a password", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 // It doesn't matter what values we put here. We will be logged in with a hard-coded dummy user.
                 LoginRequest loginRequest = new LoginRequest("dummyUserName", "dummyPassword");

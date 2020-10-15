@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".view.main.following.FollowingFragment">
+    tools:context=".view.main.main.FollowingFragment">
 
     <Space
         android:layout_width="match_parent"
@@ -51,7 +51,7 @@
         android:layout_height="12sp"/>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/cameraText"
         android:layout_width="wrap_content"
         android:layout_marginStart="30sp"
         android:layout_height="wrap_content"
@@ -63,10 +63,10 @@
         android:layout_height="12sp"/>
 
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/registerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/login" />
+        android:text="@string/register" />
 
 
 </LinearLayout>

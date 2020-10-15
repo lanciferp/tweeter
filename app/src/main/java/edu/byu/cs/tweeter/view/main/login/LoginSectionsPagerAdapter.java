@@ -32,7 +32,7 @@ public class LoginSectionsPagerAdapter  extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
 
         if (position == REGISTER_FRAGMENT_POSITION) {
-            return LoginFragment.newInstance();
+            return RegisterFragment.newInstance();
         } else if (position == LOGIN_FRAGMENT_POSITION) {
             return LoginFragment.newInstance();
         } else{

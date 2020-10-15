@@ -1,4 +1,4 @@
-package edu.byu.cs.tweeter.view.main.following;
+package edu.byu.cs.tweeter.view.main.main;
 
 import android.os.Bundle;
 
