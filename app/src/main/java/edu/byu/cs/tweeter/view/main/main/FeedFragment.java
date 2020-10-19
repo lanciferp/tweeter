@@ -137,11 +137,9 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
                     public void onClick(@NonNull View widget) {
                         Toast.makeText(widget.getContext(), "worked" + status.getLastName(), Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(getActivity(), ProfileActivity.class);
-
                         intent.putExtra(ProfileActivity.CURRENT_USER_KEY, user);
                         intent.putExtra(ProfileActivity.AUTH_TOKEN_KEY, authToken);
                         startActivity(intent);
-
                     }
 
                     @Override
@@ -154,18 +152,15 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
                 String message = status.getMessage();
                 for (int i = 0; i < message.length(); ++i){
                     if (startSpan != -1 && message.toCharArray()[i] == ' ' || i == message.length() - 1){
-                        endSpan = i;
+                        endSpan = ++i;
+                        break;
                     }
                     if (message.toCharArray()[i] == '@'){
                         startSpan = i;
                     }
-
                 }
-
                 ss.setSpan(clickableSpan, startSpan, endSpan, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             }
-
-
             return ss;
         }
     }

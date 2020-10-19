@@ -10,7 +10,9 @@ import java.util.Collections;
 import java.util.List;
 
 import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.model.service.request.FollowersRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
+import edu.byu.cs.tweeter.model.service.response.FollowersResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
 
 class ServerFacadeTest {
@@ -28,7 +30,7 @@ class ServerFacadeTest {
 
     @BeforeEach
     void setup() {
-        serverFacadeSpy = Mockito.spy(new ServerFacade(status1));
+        serverFacadeSpy = Mockito.spy(new ServerFacade());
     }
 
     @Test
@@ -142,6 +144,120 @@ class ServerFacadeTest {
 
         Assertions.assertEquals(1, response.getFollowees().size());
         Assertions.assertTrue(response.getFollowees().contains(user8));
+        Assertions.assertFalse(response.getHasMorePages());
+    }
+
+    @Test
+    void testGetFollowers_noFollowersForUser() {
+        List<User> followers = Collections.emptyList();
+        Mockito.when(serverFacadeSpy.getDummyFollowers()).thenReturn(followers);
+
+        FollowersRequest request = new FollowersRequest(user1, 10, null);
+        FollowersResponse response = serverFacadeSpy.getFollowers(request);
+
+        Assertions.assertEquals(0, response.getFollowers().size());
+        Assertions.assertFalse(response.getHasMorePages());
+    }
+
+    @Test
+    void testGetFollowers_oneFolloweeForUser_limitGreaterThanUsers() {
+        List<User> followers = Collections.singletonList(user2);
+        Mockito.when(serverFacadeSpy.getDummyFollowers()).thenReturn(followers);
+
+        FollowersRequest request = new FollowersRequest(user1, 10, null);
+        FollowersResponse response = serverFacadeSpy.getFollowers(request);
+
+        Assertions.assertEquals(1, response.getFollowers().size());
+        Assertions.assertTrue(response.getFollowers().contains(user2));
+        Assertions.assertFalse(response.getHasMorePages());
+    }
+
+    @Test
+    void testGetFollowers_twoFolloweeesForUser_limitEqualsUsers() {
+        List<User> followers = Arrays.asList(user2, user3);
+        Mockito.when(serverFacadeSpy.getDummyFollowers()).thenReturn(followers);
+
+        FollowersRequest request = new FollowersRequest(user3, 2, null);
+        FollowersResponse response = serverFacadeSpy.getFollowers(request);
+
+        Assertions.assertEquals(2, response.getFollowers().size());
+        Assertions.assertTrue(response.getFollowers().contains(user2));
+        Assertions.assertTrue(response.getFollowers().contains(user3));
+        Assertions.assertFalse(response.getHasMorePages());
+    }
+
+    @Test
+    void testGetFollowers_limitLessThanUsers_endsOnPageBoundary() {
+        List<User> followers = Arrays.asList(user2, user3, user4, user5, user6, user7);
+        Mockito.when(serverFacadeSpy.getDummyFollowers()).thenReturn(followers);
+
+        FollowersRequest request = new FollowersRequest(user5, 2, null);
+        FollowersResponse response = serverFacadeSpy.getFollowers(request);
+
+        // Verify first page
+        Assertions.assertEquals(2, response.getFollowers().size());
+        Assertions.assertTrue(response.getFollowers().contains(user2));
+        Assertions.assertTrue(response.getFollowers().contains(user3));
+        Assertions.assertTrue(response.getHasMorePages());
+
+        // Get and verify second page
+        request = new FollowersRequest(user5, 2, response.getFollowers().get(1));
+        response = serverFacadeSpy.getFollowers(request);
+
+        Assertions.assertEquals(2, response.getFollowers().size());
+        Assertions.assertTrue(response.getFollowers().contains(user4));
+        Assertions.assertTrue(response.getFollowers().contains(user5));
+        Assertions.assertTrue(response.getHasMorePages());
+
+        // Get and verify third page
+        request = new FollowersRequest(user5, 2, response.getFollowers().get(1));
+        response = serverFacadeSpy.getFollowers(request);
+
+        Assertions.assertEquals(2, response.getFollowers().size());
+        Assertions.assertTrue(response.getFollowers().contains(user6));
+        Assertions.assertTrue(response.getFollowers().contains(user7));
+        Assertions.assertFalse(response.getHasMorePages());
+    }
+
+
+    @Test
+    void testGetFollowers_limitLessThanUsers_notEndsOnPageBoundary() {
+        List<User> followers = Arrays.asList(user2, user3, user4, user5, user6, user7, user8);
+        Mockito.when(serverFacadeSpy.getDummyFollowers()).thenReturn(followers);
+
+        FollowersRequest request = new FollowersRequest(user6, 2, null);
+        FollowersResponse response = serverFacadeSpy.getFollowers(request);
+
+        // Verify first page
+        Assertions.assertEquals(2, response.getFollowers().size());
+        Assertions.assertTrue(response.getFollowers().contains(user2));
+        Assertions.assertTrue(response.getFollowers().contains(user3));
+        Assertions.assertTrue(response.getHasMorePages());
+
+        // Get and verify second page
+        request = new FollowersRequest(user6, 2, response.getFollowers().get(1));
+        response = serverFacadeSpy.getFollowers(request);
+
+        Assertions.assertEquals(2, response.getFollowers().size());
+        Assertions.assertTrue(response.getFollowers().contains(user4));
+        Assertions.assertTrue(response.getFollowers().contains(user5));
+        Assertions.assertTrue(response.getHasMorePages());
+
+        // Get and verify third page
+        request = new FollowersRequest(user6, 2, response.getFollowers().get(1));
+        response = serverFacadeSpy.getFollowers(request);
+
+        Assertions.assertEquals(2, response.getFollowers().size());
+        Assertions.assertTrue(response.getFollowers().contains(user6));
+        Assertions.assertTrue(response.getFollowers().contains(user7));
+        Assertions.assertTrue(response.getHasMorePages());
+
+        // Get and verify fourth page
+        request = new FollowersRequest(user6, 2, response.getFollowers().get(1));
+        response = serverFacadeSpy.getFollowers(request);
+
+        Assertions.assertEquals(1, response.getFollowers().size());
+        Assertions.assertTrue(response.getFollowers().contains(user8));
         Assertions.assertFalse(response.getHasMorePages());
     }
 }

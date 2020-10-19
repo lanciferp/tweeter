@@ -32,4 +32,6 @@
     <string name="last_name">last name</string>
     <string name="title_activity_profile">Profile</string>
     <string name="register">Register</string>
+    <string name="write_your_tweet_here">Write your Tweet Here</string>
+    <string name="tweet">Tweet</string>
 </resources>

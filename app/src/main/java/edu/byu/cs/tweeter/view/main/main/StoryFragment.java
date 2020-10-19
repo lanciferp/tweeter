@@ -1,6 +1,12 @@
 package edu.byu.cs.tweeter.view.main.main;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +33,7 @@ import edu.byu.cs.tweeter.model.service.request.StoryRequest;
 import edu.byu.cs.tweeter.model.service.response.StoryResponse;
 import edu.byu.cs.tweeter.presenter.StoryPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.GetStoryTask;
+import edu.byu.cs.tweeter.view.main.profile.ProfileActivity;
 import edu.byu.cs.tweeter.view.util.ImageUtils;
 
 public class StoryFragment extends Fragment implements StoryPresenter.View {
@@ -75,16 +82,48 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
         presenter = new StoryPresenter(this);
 
         RecyclerView storyRecyclerView = view.findViewById(R.id.listRecyclerView);
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         storyRecyclerView.setLayoutManager(layoutManager);
-
         storyRecyclerViewAdapter = new StoryRecyclerViewAdapter();
         storyRecyclerView.setAdapter(storyRecyclerViewAdapter);
-
         storyRecyclerView.addOnScrollListener(new StoryRecyclerViewPaginationScrollListener(layoutManager));
 
         return view;
+    }
+
+    protected SpannableString setMentions(Status status){
+        SpannableString ss = new SpannableString(status.getMessage());
+        for (User user : status.getMentions()) {
+            ClickableSpan clickableSpan = new ClickableSpan() {
+                @Override
+                public void onClick(@NonNull View widget) {
+                    Toast.makeText(widget.getContext(), "worked" + status.getLastName(), Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                    intent.putExtra(ProfileActivity.CURRENT_USER_KEY, user);
+                    intent.putExtra(ProfileActivity.AUTH_TOKEN_KEY, authToken);
+                    startActivity(intent);
+                }
+
+                @Override
+                public void updateDrawState(TextPaint ds) {
+                    super.updateDrawState(ds);
+                }
+            };
+            int startSpan = -1;
+            int endSpan = 0;
+            String message = status.getMessage();
+            for (int i = 0; i < message.length(); ++i){
+                if (startSpan != -1 && message.toCharArray()[i] == ' ' || i == message.length() - 1){
+                    endSpan = ++i;
+                    break;
+                }
+                if (message.toCharArray()[i] == '@'){
+                    startSpan = i;
+                }
+            }
+            ss.setSpan(clickableSpan, startSpan, endSpan, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        }
+        return ss;
     }
 
     private class StoryHolder extends RecyclerView.ViewHolder {
@@ -118,7 +157,9 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
             statusUserAlias.setText(status.getAlias());
             userName.setText(status.getName());
             timePosted.setText(status.getTimePosted().toString());
-            message.setText(status.getMessage());
+            SpannableString ss = setMentions(status);
+            message.setText(ss);
+            message.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 

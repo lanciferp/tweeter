@@ -16,6 +16,7 @@ import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.model.service.request.LoginRequest;
 import edu.byu.cs.tweeter.model.service.request.RegisterRequest;
 import edu.byu.cs.tweeter.model.service.request.StoryRequest;
+import edu.byu.cs.tweeter.model.service.request.TweetRequest;
 import edu.byu.cs.tweeter.model.service.request.UnfollowRequest;
 import edu.byu.cs.tweeter.model.service.response.FeedResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowResponse;
@@ -24,6 +25,7 @@ import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
 import edu.byu.cs.tweeter.model.service.response.RegisterResponse;
 import edu.byu.cs.tweeter.model.service.response.StoryResponse;
+import edu.byu.cs.tweeter.model.service.response.TweetResponse;
 import edu.byu.cs.tweeter.model.service.response.UnfollowResponse;
 
 /**
@@ -79,16 +81,18 @@ public class ServerFacade {
         return new RegisterResponse(user, new AuthToken());
     }
 
+    public TweetResponse tweet(TweetRequest request){
+        TweetResponse response = new TweetResponse(true);
+        return response;
+    }
+
     public StoryResponse getStory(StoryRequest request) {
         ArrayList<Status> statuses = new ArrayList<>();
 
         List<User> allFollowees = getDummyFollowees();
 
-        for(int i  = 0; i < 10; ++i){
-            Date date = new Date(i,1,1);
-            ArrayList<User> tempList = new ArrayList<>();
-            tempList.add(allFollowees.get(i));
-            Status status = new Status(date, "hello @user", tempList, allFollowees.get(i));
+        for(int i  = 0; i < request.getLimit(); ++i){
+            Status status = getDummyStatus();
             statuses.add(status);
         }
         return new StoryResponse(statuses,false);
@@ -99,11 +103,8 @@ public class ServerFacade {
 
         List<User> allFollowees = getDummyFollowees();
 
-        for(int i  = 0; i < 10; ++i){
-            Date date = new Date(i,1,1);
-            ArrayList<User> tempList = new ArrayList<>();
-            tempList.add(allFollowees.get(i));
-            Status status = new Status(date, "hello @user", tempList, allFollowees.get(i));
+        for(int i  = 0; i < request.getLimit(); ++i){
+            Status status = getDummyStatus();
             statuses.add(status);
         }
         return new FeedResponse(statuses,false);
@@ -276,5 +277,13 @@ public class ServerFacade {
         return Arrays.asList( user2, user3, user4, user5, user6, user7,
                 user8, user9, user10, user11, user12, user13, user14, user15, user16, user17, user18,
                 user19, user20);
+    }
+
+    Status getDummyStatus() {
+        Date date = new Date(1,1,1);
+        ArrayList<User> tempList = new ArrayList<>();
+        tempList.add(user1);
+        Status status = new Status(date, "hello @user", tempList, user1);
+        return status;
     }
 }
