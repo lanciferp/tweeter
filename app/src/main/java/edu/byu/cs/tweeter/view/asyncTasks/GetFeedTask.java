@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
+import edu.byu.cs.tweeter.util.ByteArrayUtils;
 import edu.byu.cs.tweeter.model.service.request.FeedRequest;
 import edu.byu.cs.tweeter.model.service.response.FeedResponse;
 import edu.byu.cs.tweeter.presenter.FeedPresenter;
@@ -39,11 +41,24 @@ public class GetFeedTask extends AsyncTask<FeedRequest, Void, FeedResponse> {
 
         try{
             response = presenter.getFeed(feedRequests[0]);
-        } catch (IOException ex) {
+        } catch (IOException | TweeterRemoteException ex) {
             exception = ex;
         }
 
+        try {
+            assert response != null;
+            loadImages(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return response;
+    }
+    private void loadImages(FeedResponse response) throws IOException {
+        for(edu.byu.cs.tweeter.model.domain.Status status : response.getStatuses()) {
+            byte[] bytes = ByteArrayUtils.bytesFromUrl(status.getImageUrl());
+            status.setImageBytes(bytes);
+        }
     }
 
     @Override

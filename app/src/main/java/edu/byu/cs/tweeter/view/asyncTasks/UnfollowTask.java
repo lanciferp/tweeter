@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.request.UnfollowRequest;
 import edu.byu.cs.tweeter.model.service.response.UnfollowResponse;
 import edu.byu.cs.tweeter.presenter.UnfollowPresenter;
@@ -34,7 +35,7 @@ public class UnfollowTask extends AsyncTask<UnfollowRequest, Void, UnfollowRespo
 
         try {
             unfollowResponse = presenter.unfollow(unfollowRequests[0]);
-        } catch (IOException ex) {
+        } catch (IOException | TweeterRemoteException ex) {
             exception = ex;
         }
 

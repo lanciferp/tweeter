@@ -97,12 +97,12 @@ public class ProfileActivity extends AppCompatActivity implements FollowPresente
             public void onClick(View v) {
                 if ( followButton.getText() == "Follow"){
                     followButton.setText("Unfollow");
-                    FollowRequest followRequest = new FollowRequest(user);
+                    FollowRequest followRequest = new FollowRequest(user, authToken);
                     FollowTask followTask = new FollowTask(followPresenter, ProfileActivity.this);
                     followTask.execute(followRequest);
                 } else {
                     followButton.setText("Follow");
-                    UnfollowRequest unfollowRequest = new UnfollowRequest(user);
+                    UnfollowRequest unfollowRequest = new UnfollowRequest(user, authToken);
                     UnfollowTask unfollowTask = new UnfollowTask(unfollowPresenter, ProfileActivity.this);
                     unfollowTask.execute(unfollowRequest);
                 }

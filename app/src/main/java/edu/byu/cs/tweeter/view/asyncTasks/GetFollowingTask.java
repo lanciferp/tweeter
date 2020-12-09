@@ -4,6 +4,9 @@ import android.os.AsyncTask;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
+import edu.byu.cs.tweeter.util.ByteArrayUtils;
+import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
 import edu.byu.cs.tweeter.presenter.FollowingPresenter;
@@ -55,11 +58,29 @@ public class GetFollowingTask extends AsyncTask<FollowingRequest, Void, Followin
 
         try {
             response = presenter.getFollowing(followingRequests[0]);
-        } catch (IOException ex) {
+        } catch (IOException | TweeterRemoteException ex) {
             exception = ex;
         }
 
+        try {
+            assert response != null;
+            loadImages(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return response;
+    }
+
+    /**
+     * Loads the profile image data for each followee included in the response.
+     *
+     * @param response the response from the followee request.
+     */
+    private void loadImages(FollowingResponse response) throws IOException {
+        for(User user : response.getFollowees()) {
+            byte [] bytes = ByteArrayUtils.bytesFromUrl(user.getImageUrl());
+            user.setImageBytes(bytes);
+        }
     }
 
     /**

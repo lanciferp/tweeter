@@ -6,9 +6,8 @@ import android.util.Log;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.model.domain.User;
-import edu.byu.cs.tweeter.model.service.request.LoginRequest;
+import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.request.RegisterRequest;
-import edu.byu.cs.tweeter.model.service.response.LoginResponse;
 import edu.byu.cs.tweeter.model.service.response.RegisterResponse;
 import edu.byu.cs.tweeter.presenter.RegisterPresenter;
 import edu.byu.cs.tweeter.util.ByteArrayUtils;
@@ -36,20 +35,23 @@ public class RegisterTask extends AsyncTask<RegisterRequest, Void, RegisterRespo
 
     @Override
     protected RegisterResponse doInBackground(RegisterRequest... registerRequests) {
-        RegisterResponse registerResponse = null;
+        RegisterResponse response = null;
 
         try {
-            registerResponse = presenter.register(registerRequests[0]);
+            response = presenter.register(registerRequests[0]);
 
-            if(registerResponse.isSuccess()) {
-                loadImage(registerResponse.getUser());
+            if(response.isSuccess()) {
+                loadImage(response.getUser());
             }
-        } catch (IOException ex) {
+        } catch (IOException | TweeterRemoteException ex) {
             exception = ex;
         }
 
-        return registerResponse;
+
+
+        return response;
     }
+
 
     private void loadImage(User user) {
         try {
