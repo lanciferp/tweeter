@@ -4,12 +4,14 @@ import android.os.AsyncTask;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.model.net.TweeterImageException;
 import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.util.ByteArrayUtils;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.service.request.FollowersRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowersResponse;
 import edu.byu.cs.tweeter.presenter.FollowersPresenter;
+import edu.byu.cs.tweeter.util.ImageUtils;
 
 /**
  * An {@link AsyncTask} for retrieving followees for a user.
@@ -59,13 +61,15 @@ public class GetFollowersTask extends AsyncTask<FollowersRequest, Void, Follower
             response = presenter.getFollowers(followersRequests[0]);
         } catch (IOException | TweeterRemoteException ex) {
             exception = ex;
+            response = new FollowersResponse(exception.getMessage());
+            return response;
         }
 
         try {
             assert response != null;
             loadImages(response);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (TweeterImageException e) {
+            observer.handleException(e);
         }
         return response;
     }
@@ -75,10 +79,9 @@ public class GetFollowersTask extends AsyncTask<FollowersRequest, Void, Follower
      *
      * @param response the response from the followee request.
      */
-    private void loadImages(FollowersResponse response) throws IOException {
+    private void loadImages(FollowersResponse response) throws TweeterImageException {
         for(User user : response.getFollowers()) {
-            byte [] bytes = ByteArrayUtils.bytesFromUrl(user.getImageUrl());
-            user.setImageBytes(bytes);
+            ImageUtils.loadImage(user);
         }
     }
 

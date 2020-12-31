@@ -14,8 +14,7 @@ public class FollowServiceProxy implements FollowService{
     @Override
     public FollowResponse follow(FollowRequest request) throws IOException, TweeterRemoteException {
         ServerFacade serverFacade = getServerFacade();
-        FollowResponse followResponse = serverFacade.follow(request, URL_PATH);
-        return followResponse;
+        return serverFacade.follow(request, URL_PATH);
     }
 
     ServerFacade getServerFacade() {

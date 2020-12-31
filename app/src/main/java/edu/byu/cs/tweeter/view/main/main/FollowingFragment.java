@@ -27,7 +27,7 @@ import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
 import edu.byu.cs.tweeter.presenter.FollowingPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.GetFollowingTask;
-import edu.byu.cs.tweeter.view.util.ImageUtils;
+import edu.byu.cs.tweeter.util.ImageUtils;
 
 /**
  * The fragment that displays on the 'Following' tab.
@@ -177,8 +177,6 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
          * @param user the user to add.
          */
         void addItem(User user) {
-
-
             users.add(user);
             this.notifyItemInserted(users.size() - 1);
         }
@@ -208,10 +206,8 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
         public FollowingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(FollowingFragment.this.getContext());
             View view;
-
             if(viewType == LOADING_DATA_VIEW) {
                 view =layoutInflater.inflate(R.layout.loading_row, parent, false);
-
             } else {
                 view = layoutInflater.inflate(R.layout.user_row, parent, false);
             }

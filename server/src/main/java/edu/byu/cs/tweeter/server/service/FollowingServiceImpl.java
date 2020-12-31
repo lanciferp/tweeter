@@ -1,9 +1,15 @@
 package edu.byu.cs.tweeter.server.service;
 
+import java.util.ArrayList;
+
+import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.FollowingService;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
-import edu.byu.cs.tweeter.server.dao.FollowingDAO;
+import edu.byu.cs.tweeter.server.dao.DTO.FollowDTO;
+import edu.byu.cs.tweeter.server.dao.FollowDAO;
+import edu.byu.cs.tweeter.server.dao.UserDAO;
 
 /**
  * Contains the business logic for getting the users a user is following.
@@ -20,18 +26,24 @@ public class FollowingServiceImpl implements FollowingService {
      * @return the followees.
      */
     @Override
-    public FollowingResponse getFollowees(FollowingRequest request) {
-        return getFollowingDAO().getFollowees(request);
+    public FollowingResponse getFollowees(FollowingRequest request) throws TweeterRemoteException {
+        boolean morePages = false;
+        ArrayList<FollowDTO> following = getFollowDAO().getFollowing(request.getFollower().getAlias(), morePages);
+        ArrayList<String> aliases = new ArrayList<>();
+        for (FollowDTO follow : following){
+            String alias = follow.getFolowee();
+            aliases.add(alias);
+        }
+        ArrayList<User> users = getUserDAO().getUsers(aliases);
+
+        return new FollowingResponse(users, morePages);
     }
 
-    /**
-     * Returns an instance of {@link FollowingDAO}. Allows mocking of the FollowingDAO class
-     * for testing purposes. All usages of FollowingDAO should get their FollowingDAO
-     * instance from this method to allow for mocking of the instance.
-     *
-     * @return the instance.
-     */
-    FollowingDAO getFollowingDAO() {
-        return new FollowingDAO();
+    UserDAO getUserDAO(){
+        return new UserDAO();
     }
+    FollowDAO getFollowDAO(){
+        return new FollowDAO();
+    }
+
 }

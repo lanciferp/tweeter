@@ -8,6 +8,10 @@ import edu.byu.cs.tweeter.model.domain.Status;
 public class StoryResponse extends PagedResponse{
     private List<Status> statuses;
 
+    public StoryResponse() {
+        super(false, false);
+    }
+
     /**
      * Creates a response indicating the request failed and passing along the message
      *

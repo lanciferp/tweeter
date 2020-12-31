@@ -28,8 +28,6 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
     private static final String LOG_TAG = "RegisterFragment";
     private Toast registerToast;
 
-
-
     public static RegisterFragment newInstance(){
         return new RegisterFragment();
     }
@@ -65,7 +63,7 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
              */
             @Override
             public void onClick(View view) {
-                registerToast = Toast.makeText(getContext(), "Logging In", Toast.LENGTH_LONG);
+                registerToast = Toast.makeText(getContext(), "Registering", Toast.LENGTH_LONG);
                 registerToast.show();
 
                 if(username.getText().toString().equals("")){
@@ -83,8 +81,8 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
                 }
 
                 // It doesn't matter what values we put here. We will be logged in with a hard-coded dummy user.
-                RegisterRequest registerRequest = new RegisterRequest("dummyUserName", "dummyPassword", "new",
-                        "last", "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
+                RegisterRequest registerRequest = new RegisterRequest(username.getText().toString(), password.getText().toString(), firstName.getText().toString(),
+                        lastName.getText().toString(), "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
                 RegisterTask registerTask = new RegisterTask(presenter, RegisterFragment.this);
                 registerTask.execute(registerRequest);
             }

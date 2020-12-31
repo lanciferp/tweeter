@@ -27,8 +27,6 @@ public class LoginFragment extends Fragment implements LoginPresenter.View, Logi
     private static final String LOG_TAG = "LoginFragment";
     private Toast loginInToast;
 
-
-
     public static LoginFragment newInstance(){
         return new LoginFragment();
     }
@@ -65,7 +63,7 @@ public class LoginFragment extends Fragment implements LoginPresenter.View, Logi
                 }
 
                 // It doesn't matter what values we put here. We will be logged in with a hard-coded dummy user.
-                LoginRequest loginRequest = new LoginRequest("dummyUserName", "dummyPassword");
+                LoginRequest loginRequest = new LoginRequest(username.getText().toString(), password.getText().toString());
                 LoginTask loginTask = new LoginTask(presenter, LoginFragment.this);
                 loginTask.execute(loginRequest);
             }
@@ -77,10 +75,8 @@ public class LoginFragment extends Fragment implements LoginPresenter.View, Logi
     @Override
     public void loginSuccessful(LoginResponse loginResponse) {
         Intent intent = new Intent(getContext(), MainActivity.class);
-
         intent.putExtra(MainActivity.CURRENT_USER_KEY, loginResponse.getUser());
         intent.putExtra(MainActivity.AUTH_TOKEN_KEY, loginResponse.getAuthToken());
-
         startActivity(intent);
     }
 
@@ -92,6 +88,6 @@ public class LoginFragment extends Fragment implements LoginPresenter.View, Logi
     @Override
     public void handleException(Exception exception) {
         Log.e(LOG_TAG, exception.getMessage(), exception);
-        Toast.makeText(getContext(), "Failed to login because of exception: " + exception.getMessage(), Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
     }
 }

@@ -2,7 +2,6 @@ package edu.byu.cs.tweeter.model.net;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.request.FeedRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowersRequest;
@@ -43,20 +42,20 @@ public class ServerFacade {
     public LoginResponse login(LoginRequest request, String urlPath) throws IOException, TweeterRemoteException {
         LoginResponse response = clientCommunicator.doPost(urlPath, request, null, LoginResponse.class);
 
-        if(response.isSuccess()) {
+        if(response.isSuccess()){
             return response;
         } else {
-            throw new RuntimeException(response.getMessage());
+            throw new TweeterRequestException("Couldn't Login: " + response.getMessage(), "Login", null);
         }
     }
 
     public RegisterResponse register(RegisterRequest request, String urlPath) throws IOException, TweeterRemoteException {
         RegisterResponse response = clientCommunicator.doPost(urlPath, request, null, RegisterResponse.class);
 
-        if(response.isSuccess()) {
+        if(response.isSuccess()){
             return response;
         } else {
-            throw new RuntimeException((response.getMessage()));
+            throw new TweeterRequestException("Couldn't Register: " + response.getMessage(), "Register", null);
         }
     }
 
@@ -76,7 +75,7 @@ public class ServerFacade {
         if(response.isSuccess()) {
             return response;
         } else {
-            throw new RuntimeException(response.getMessage());
+            throw new TweeterRequestException("Couldn't get Following: " + response.getMessage(), "GetFollowing", null);
         }
     }
 
@@ -86,7 +85,7 @@ public class ServerFacade {
         if(response.isSuccess()) {
             return response;
         } else {
-            throw new RuntimeException(response.getMessage());
+            throw new TweeterRequestException("Couldn't get Followers: " + response.getMessage(), "GetFollowers", null);
         }
     }
 
@@ -96,7 +95,7 @@ public class ServerFacade {
         if(response.isSuccess()) {
             return response;
         } else {
-            throw new RuntimeException(response.getMessage());
+            throw new TweeterRequestException("Couldn't send Tweet: " + response.getMessage(), "Tweet", null);
         }
     }
 
@@ -106,7 +105,7 @@ public class ServerFacade {
         if(response.isSuccess()) {
             return response;
         } else {
-            throw new RuntimeException(response.getMessage());
+            throw new TweeterRequestException("Couldn't Follow: " + response.getMessage(), "Follow", null);
         }
     }
 
@@ -116,7 +115,7 @@ public class ServerFacade {
         if(response.isSuccess()) {
             return response;
         } else {
-            throw new RuntimeException(response.getMessage());
+            throw new TweeterRequestException("Couldn't Unfollow: " + response.getMessage(), "Unfollow", null);
         }
     }
 
@@ -126,7 +125,7 @@ public class ServerFacade {
         if(response.isSuccess()) {
             return response;
         } else {
-            throw new RuntimeException(response.getMessage());
+            throw new TweeterRequestException("Couldn't get Feed: " + response.getMessage(), "GetFeed", null);
         }
     }
 
@@ -136,8 +135,7 @@ public class ServerFacade {
         if(response.isSuccess()) {
             return response;
         } else {
-            throw new RuntimeException(response.getMessage());
+            throw new TweeterRequestException("Couldn't get Story" + response.getMessage(), "GetStory", null);
         }
     }
-
 }

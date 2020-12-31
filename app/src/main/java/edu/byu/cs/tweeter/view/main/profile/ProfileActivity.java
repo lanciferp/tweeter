@@ -31,7 +31,7 @@ import edu.byu.cs.tweeter.presenter.UnfollowPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.FollowTask;
 import edu.byu.cs.tweeter.view.asyncTasks.UnfollowTask;
 import edu.byu.cs.tweeter.view.main.login.LoginActivity;
-import edu.byu.cs.tweeter.view.util.ImageUtils;
+import edu.byu.cs.tweeter.util.ImageUtils;
 
 /**
  * The main activity for the application. Contains tabs for feed, story, following, and followers.
@@ -40,6 +40,7 @@ public class ProfileActivity extends AppCompatActivity implements FollowPresente
 
     public static final String CURRENT_USER_KEY = "CurrentUser";
     public static final String AUTH_TOKEN_KEY = "AuthTokenKey";
+    public static final String PROFILE_USER_KEY = "ProfileKey";
     private static final String LOG_TAG = "ProfileActivity";
 
     private TextView followerCount;
@@ -57,52 +58,40 @@ public class ProfileActivity extends AppCompatActivity implements FollowPresente
             throw new RuntimeException("User not passed to activity");
         }
 
+        User profileUser = (User) getIntent().getSerializableExtra(PROFILE_USER_KEY);
         AuthToken authToken = (AuthToken) getIntent().getSerializableExtra(AUTH_TOKEN_KEY);
-
         ProfileSectionsPagerAdapter sectionsPagerAdapter = new  ProfileSectionsPagerAdapter(this, getSupportFragmentManager(), user, authToken);
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
-
-        followPresenter = new FollowPresenter(this);
-        unfollowPresenter = new UnfollowPresenter(this);
-
         TextView userName = findViewById(R.id.userName);
         userName.setText(user.getName());
-
         TextView userAlias = findViewById(R.id.userAlias);
         userAlias.setText(user.getAlias());
-
         ImageView userImageView = findViewById(R.id.userImage);
         userImageView.setImageDrawable(ImageUtils.drawableFromByteArray(user.getImageBytes()));
-
         TextView followeeCount = findViewById(R.id.followeeCount);
         followeeCount.setText(getString(R.string.followeeCount, 42));
 
+        followPresenter = new FollowPresenter(this);
+        unfollowPresenter = new UnfollowPresenter(this);
         followerCount = findViewById(R.id.followerCount);
         followerCount.setText(getString(R.string.followerCount, 27));
 
         followButton = findViewById(R.id.follow_button);
         followButton.setText("Follow");
-//        followButton.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if (hasFocus) {
-//                    v.performClick();
-//                }
-//            }
-//        });
         followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if ( followButton.getText() == "Follow"){
                     followButton.setText("Unfollow");
-                    FollowRequest followRequest = new FollowRequest(user, authToken);
+                    FollowRequest followRequest = new FollowRequest(user, authToken, profileUser.getAlias());
                     FollowTask followTask = new FollowTask(followPresenter, ProfileActivity.this);
                     followTask.execute(followRequest);
                 } else {
                     followButton.setText("Follow");
-                    UnfollowRequest unfollowRequest = new UnfollowRequest(user, authToken);
+                    UnfollowRequest unfollowRequest = new UnfollowRequest(profileUser, authToken, user.getAlias());
                     UnfollowTask unfollowTask = new UnfollowTask(unfollowPresenter, ProfileActivity.this);
                     unfollowTask.execute(unfollowRequest);
                 }
@@ -132,6 +121,7 @@ public class ProfileActivity extends AppCompatActivity implements FollowPresente
         followerCount.setText(getString(R.string.followerCount, followResponse.getNewFollowerCount()));
 
     }
+
 
     @Override
     public void newUnfollowCount(UnfollowResponse followResponse) {

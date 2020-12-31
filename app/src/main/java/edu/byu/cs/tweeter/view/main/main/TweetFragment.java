@@ -10,8 +10,6 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
-import java.util.Date;
-
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.Status;
@@ -25,11 +23,9 @@ public class TweetFragment extends DialogFragment implements TweetPresenter.View
 
     EditText tweetText;
     Button sendTweet;
-
     public static final String CURRENT_USER_KEY = "CurrentUser";
     public static final String AUTH_TOKEN_KEY = "AuthTokenKey";
     private TweetPresenter presenter;
-
     private User user;
     private AuthToken authToken;
 
@@ -46,12 +42,13 @@ public class TweetFragment extends DialogFragment implements TweetPresenter.View
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_login_popup, container, false);
+        View v = inflater.inflate(R.layout.fragment_tweet_popup, container, false);
         //noinspection ConstantConditions
         user = (User) getArguments().getSerializable(CURRENT_USER_KEY);
         authToken = (AuthToken) getArguments().getSerializable(AUTH_TOKEN_KEY);
         presenter = new TweetPresenter(this);
 
+        tweetText = v.findViewById(R.id.tweetPopupEditText);
         sendTweet = v.findViewById(R.id.tweetButton);
         sendTweet.setOnClickListener(new View.OnClickListener() {
             @Override

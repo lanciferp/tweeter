@@ -11,6 +11,10 @@ public class LoginResponse extends Response {
     private User user;
     private AuthToken authToken;
 
+    public LoginResponse() {
+        super(false);
+    }
+
     /**
      * Creates a response indicating that the corresponding request was unsuccessful.
      *

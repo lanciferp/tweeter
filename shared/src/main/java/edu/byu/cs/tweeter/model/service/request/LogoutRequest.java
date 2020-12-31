@@ -1,7 +1,11 @@
 package edu.byu.cs.tweeter.model.service.request;
 
 public class LogoutRequest {
-    private final String username;
+    private String username;
+
+    public LogoutRequest() {
+        username = null;
+    }
 
     public LogoutRequest(String username) {
         this.username = username;
@@ -9,5 +13,9 @@ public class LogoutRequest {
 
     public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

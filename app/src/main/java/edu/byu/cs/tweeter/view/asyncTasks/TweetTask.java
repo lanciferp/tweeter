@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.request.TweetRequest;
+import edu.byu.cs.tweeter.model.service.response.FeedResponse;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
 import edu.byu.cs.tweeter.model.service.response.TweetResponse;
 import edu.byu.cs.tweeter.presenter.TweetPresenter;
@@ -35,6 +36,8 @@ public class TweetTask extends AsyncTask<TweetRequest, Void, TweetResponse> {
             response = presenter.tweet(tweetRequests[0]);
         } catch (IOException | TweeterRemoteException e) {
             exception = e;
+            response = new TweetResponse(exception.getMessage());
+            return response;
         }
 
         return response;

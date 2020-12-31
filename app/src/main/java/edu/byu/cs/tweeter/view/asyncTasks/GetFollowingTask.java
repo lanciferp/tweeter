@@ -1,15 +1,18 @@
 package edu.byu.cs.tweeter.view.asyncTasks;
 
+import android.media.Image;
 import android.os.AsyncTask;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.model.net.TweeterImageException;
 import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.util.ByteArrayUtils;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
 import edu.byu.cs.tweeter.presenter.FollowingPresenter;
+import edu.byu.cs.tweeter.util.ImageUtils;
 
 /**
  * An {@link AsyncTask} for retrieving followees for a user.
@@ -54,19 +57,21 @@ public class GetFollowingTask extends AsyncTask<FollowingRequest, Void, Followin
     @Override
     protected FollowingResponse doInBackground(FollowingRequest... followingRequests) {
 
-        FollowingResponse response = null;
+        FollowingResponse response;
 
         try {
             response = presenter.getFollowing(followingRequests[0]);
         } catch (IOException | TweeterRemoteException ex) {
             exception = ex;
+            response = new FollowingResponse(exception.getMessage());
+            return response;
         }
 
         try {
             assert response != null;
             loadImages(response);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (TweeterImageException e) {
+            observer.handleException(e);
         }
         return response;
     }
@@ -76,10 +81,9 @@ public class GetFollowingTask extends AsyncTask<FollowingRequest, Void, Followin
      *
      * @param response the response from the followee request.
      */
-    private void loadImages(FollowingResponse response) throws IOException {
+    private void loadImages(FollowingResponse response) throws TweeterImageException {
         for(User user : response.getFollowees()) {
-            byte [] bytes = ByteArrayUtils.bytesFromUrl(user.getImageUrl());
-            user.setImageBytes(bytes);
+            ImageUtils.loadImage(user);
         }
     }
 

@@ -4,15 +4,16 @@ import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class FeedRequest {
-    private final User feedSource;
-    private final int limit;
-    private final Status lastStatus;
+    private User feedSource;
+    private int limit;
+    private Status lastStatus;
 
     public FeedRequest() {
         feedSource = null;
         limit = 0;
         lastStatus = null;
     }
+
 
     /**
      *
@@ -27,6 +28,7 @@ public class FeedRequest {
         this.lastStatus = lastStatus;
     }
 
+
     public User getFeedSource() {
         return feedSource;
     }
@@ -37,5 +39,17 @@ public class FeedRequest {
 
     public Status getLastStatus() {
         return lastStatus;
+    }
+
+    public void setFeedSource(User feedSource) {
+        this.feedSource = feedSource;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public void setLastStatus(Status lastStatus) {
+        this.lastStatus = lastStatus;
     }
 }

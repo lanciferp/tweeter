@@ -34,22 +34,19 @@ import edu.byu.cs.tweeter.model.service.response.StoryResponse;
 import edu.byu.cs.tweeter.presenter.StoryPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.GetStoryTask;
 import edu.byu.cs.tweeter.view.main.profile.ProfileActivity;
-import edu.byu.cs.tweeter.view.util.ImageUtils;
+import edu.byu.cs.tweeter.util.ImageUtils;
 
 public class StoryFragment extends Fragment implements StoryPresenter.View {
     private static final String LOG_TAG = "StoryFragment";
     private static final String USER_KEY = "UserKey";
     private static final String AUTH_TOKEN_KEY = "AuthTokenKey";
-
     private static final int LOADING_DATA_VIEW = 0;
     private static final int ITEM_VIEW = 1;
-
     private static final int PAGE_SIZE = 10;
 
     private User user;
     private AuthToken authToken;
     private StoryPresenter presenter;
-
     private StoryRecyclerViewAdapter storyRecyclerViewAdapter;
 
     /**
@@ -78,7 +75,6 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
         //noinspection ConstantConditions
         user = (User) getArguments().getSerializable(USER_KEY);
         authToken = (AuthToken) getArguments().getSerializable(AUTH_TOKEN_KEY);
-
         presenter = new StoryPresenter(this);
 
         RecyclerView storyRecyclerView = view.findViewById(R.id.listRecyclerView);

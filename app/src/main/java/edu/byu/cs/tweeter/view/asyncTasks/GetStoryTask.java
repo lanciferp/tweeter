@@ -4,11 +4,13 @@ import android.os.AsyncTask;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.model.net.TweeterImageException;
 import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.util.ByteArrayUtils;
 import edu.byu.cs.tweeter.model.service.request.StoryRequest;
 import edu.byu.cs.tweeter.model.service.response.StoryResponse;
 import edu.byu.cs.tweeter.presenter.StoryPresenter;
+import edu.byu.cs.tweeter.util.ImageUtils;
 
 public class GetStoryTask extends AsyncTask<StoryRequest, Void, StoryResponse> {
 
@@ -37,27 +39,31 @@ public class GetStoryTask extends AsyncTask<StoryRequest, Void, StoryResponse> {
 
     @Override
     protected StoryResponse doInBackground(StoryRequest... storyRequests) {
-        StoryResponse response = null;
+        StoryResponse response;
 
         try{
             response = presenter.getStory(storyRequests[0]);
         } catch (IOException | TweeterRemoteException ex) {
             exception = ex;
+            response = new StoryResponse(exception.getMessage());
+            return response;
         }
 
         try {
             assert response != null;
             loadImages(response);
-        } catch (IOException e) {
+        } catch (TweeterImageException e) {
             e.printStackTrace();
         }
         return response;
     }
 
-    private void loadImages(StoryResponse response) throws IOException {
+    private void loadImages(StoryResponse response) throws TweeterImageException {
         for(edu.byu.cs.tweeter.model.domain.Status status : response.getStatuses()) {
-            byte[] bytes = ByteArrayUtils.bytesFromUrl(status.getImageUrl());
-            status.setImageBytes(bytes);
+            ImageUtils.loadImage(status.getUser());
+            for (edu.byu.cs.tweeter.model.domain.User user : status.getMentions()){
+                ImageUtils.loadImage(user);
+            }
         }
     }
     

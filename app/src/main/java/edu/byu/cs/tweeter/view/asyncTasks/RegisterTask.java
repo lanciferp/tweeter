@@ -45,6 +45,8 @@ public class RegisterTask extends AsyncTask<RegisterRequest, Void, RegisterRespo
             }
         } catch (IOException | TweeterRemoteException ex) {
             exception = ex;
+            response = new RegisterResponse(exception.getMessage());
+            return response;
         }
 
 

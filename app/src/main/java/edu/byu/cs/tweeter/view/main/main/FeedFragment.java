@@ -34,12 +34,13 @@ import edu.byu.cs.tweeter.model.service.response.FeedResponse;
 import edu.byu.cs.tweeter.presenter.FeedPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.GetFeedTask;
 import edu.byu.cs.tweeter.view.main.profile.ProfileActivity;
-import edu.byu.cs.tweeter.view.util.ImageUtils;
+import edu.byu.cs.tweeter.util.ImageUtils;
 
 public class FeedFragment extends Fragment implements FeedPresenter.View {
     private static final String LOG_TAG = "FeedFragment";
     private static final String USER_KEY = "UserKey";
     private static final String AUTH_TOKEN_KEY = "AuthTokenKey";
+    private static final String PROFILE_USER_KEY = "ProfileKey";
 
     private static final int LOADING_DATA_VIEW = 0;
     private static final int ITEM_VIEW = 1;
@@ -131,7 +132,7 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
 
         protected SpannableString setMentions(Status status){
             SpannableString ss = new SpannableString(status.getMessage());
-            for (User user : status.getMentions()) {
+            for (User user1 : status.getMentions()) {
                 ClickableSpan clickableSpan = new ClickableSpan() {
                     @Override
                     public void onClick(@NonNull View widget) {
@@ -139,6 +140,7 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
                         Intent intent = new Intent(getActivity(), ProfileActivity.class);
                         intent.putExtra(ProfileActivity.CURRENT_USER_KEY, user);
                         intent.putExtra(ProfileActivity.AUTH_TOKEN_KEY, authToken);
+                        intent.putExtra(ProfileActivity.PROFILE_USER_KEY, user1);
                         startActivity(intent);
                     }
 

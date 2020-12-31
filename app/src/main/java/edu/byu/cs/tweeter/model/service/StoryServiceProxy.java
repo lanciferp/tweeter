@@ -13,8 +13,7 @@ public class StoryServiceProxy implements StoryService{
 
     public StoryResponse getStory(StoryRequest request) throws IOException, TweeterRemoteException {
         ServerFacade serverFacade = getServerFacade();
-        StoryResponse storyResponse = serverFacade.getStory(request, URL_PATH);
-        return storyResponse;
+        return serverFacade.getStory(request, URL_PATH);
     }
 
     ServerFacade getServerFacade() {

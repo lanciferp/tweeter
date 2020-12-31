@@ -11,6 +11,7 @@ import edu.byu.cs.tweeter.model.service.request.LoginRequest;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
 import edu.byu.cs.tweeter.presenter.LoginPresenter;
 import edu.byu.cs.tweeter.util.ByteArrayUtils;
+import edu.byu.cs.tweeter.util.ImageUtils;
 
 public class LoginTask extends AsyncTask<LoginRequest, Void, LoginResponse> {
 
@@ -52,36 +53,22 @@ public class LoginTask extends AsyncTask<LoginRequest, Void, LoginResponse> {
      */
     @Override
     protected LoginResponse doInBackground(LoginRequest... loginRequests) {
-        LoginResponse loginResponse = null;
+        LoginResponse loginResponse;
 
         try {
             loginResponse = presenter.login(loginRequests[0]);
 
             if(loginResponse.isSuccess()) {
-                loadImage(loginResponse.getUser());
+                ImageUtils.loadImage(loginResponse.getUser());
             }
         } catch (IOException | TweeterRemoteException ex) {
             exception = ex;
+            loginResponse = new LoginResponse(exception.getMessage());
+            return loginResponse;
         }
 
 
         return loginResponse;
-    }
-
-
-
-    /**
-     * Loads the profile image for the user.
-     *
-     * @param user the user whose profile image is to be loaded.
-     */
-    private void loadImage(User user) {
-        try {
-            byte [] bytes = ByteArrayUtils.bytesFromUrl(user.getImageUrl());
-            user.setImageBytes(bytes);
-        } catch (IOException e) {
-            Log.e(this.getClass().getName(), e.toString(), e);
-        }
     }
 
     /**

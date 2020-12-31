@@ -5,9 +5,9 @@ import edu.byu.cs.tweeter.model.domain.User;
 
 public class StoryRequest {
 
-    private final User storySource;
-    private final int limit;
-    private final Status lastStatus;
+    private User storySource;
+    private int limit;
+    private Status lastStatus;
 
     public StoryRequest() {
         storySource = null;
@@ -38,5 +38,17 @@ public class StoryRequest {
 
     public Status getLastStatus() {
         return lastStatus;
+    }
+
+    public void setStorySource(User storySource) {
+        this.storySource = storySource;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public void setLastStatus(Status lastStatus) {
+        this.lastStatus = lastStatus;
     }
 }

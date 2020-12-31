@@ -8,7 +8,6 @@ import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
 import edu.byu.cs.tweeter.util.ByteArrayUtils;
-import edu.byu.cs.tweeter.model.service.FollowingService;
 
 /**
  * Contains the business logic for getting the users a user is following.

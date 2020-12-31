@@ -49,6 +49,10 @@ public class Status {
         return user.getName();
     }
 
+    public User getUser(){
+        return user;
+    }
+
     public String getAlias(){
         return user.getAlias();
     }

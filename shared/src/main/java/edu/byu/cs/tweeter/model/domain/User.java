@@ -1,6 +1,7 @@
 package edu.byu.cs.tweeter.model.domain;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -21,10 +22,23 @@ public class User implements Comparable<User>, Serializable {
         imageUrl = null;
     }
 
+    /**
+     *
+     * @param firstName
+     * @param lastName
+     * @param imageURL
+     */
     public User(String firstName, String lastName, String imageURL) {
         this(firstName, lastName, String.format("@%s%s", firstName, lastName), imageURL);
     }
 
+    /**
+     *
+     * @param firstName
+     * @param lastName
+     * @param alias
+     * @param imageURL
+     */
     public User(String firstName, String lastName, String alias, String imageURL) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -40,7 +54,7 @@ public class User implements Comparable<User>, Serializable {
         return lastName;
     }
 
-    //public String getName() {
+    public String getName() {
         return String.format("%s %s", firstName, lastName);
     }
 
@@ -57,7 +71,7 @@ public class User implements Comparable<User>, Serializable {
     }
 
     public void setImageBytes(byte[] imageBytes) {
-        this.imageBytes = imageBytes;
+        this.imageBytes = Arrays.copyOf(imageBytes, imageBytes.length);
     }
 
     @Override

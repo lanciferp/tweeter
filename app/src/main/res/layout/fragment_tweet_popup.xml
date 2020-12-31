@@ -35,7 +35,7 @@
 
     </LinearLayout>
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/tweetPopupEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/linearlayoutUserTweet"
@@ -47,7 +47,7 @@
         android:id="@+id/tweetButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextTextPersonName"
-        android:layout_alignEnd="@id/editTextTextPersonName"
+        android:layout_below="@id/tweetPopupEditText"
+        android:layout_alignEnd="@id/tweetPopupEditText"
         android:text="@string/tweet" />
 </RelativeLayout>
